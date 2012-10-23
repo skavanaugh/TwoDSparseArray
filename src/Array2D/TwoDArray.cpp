@@ -82,11 +82,11 @@ void TwoDArray<T>::remove(int r, int c) {
 template <typename T>
 void TwoDArray<T>::print() {
 
-  for (int i=0; i<columns; i++) {
+  for (int i=0; i<rows; i++) {
     cout << "[ ";
-    for (int j=0; j<rows; j++) {
+    for (int j=0; j<columns; j++) {
       cout << theArray[i][j];
-      if (j<rows-1) cout << ", ";
+      if (j<columns-1) cout << ", ";
     } 
     cout << " ]" << endl;
   }
