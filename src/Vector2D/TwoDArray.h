@@ -10,7 +10,7 @@ class TwoDArray {
     //int rows;
     //int columns;
     T defaultValue;
-    std::vector<std::vector<T> >* theVector;
+    std::vector<std::vector<T> > theVector;
     //std::vector<T> the1DVector;
     
   public:
