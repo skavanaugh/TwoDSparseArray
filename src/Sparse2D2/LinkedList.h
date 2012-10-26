@@ -1,6 +1,8 @@
 #ifndef __LLIST_H__
 #define __LLIST_H__
 
+#include "Node.h"
+
 template <typename T>
 class LinkedList {
   private:
@@ -8,7 +10,7 @@ class LinkedList {
     int numElements;
 
   public:
-    //LinkedList<T>();
+    LinkedList<T>();
     LinkedList<T>(Node<T>* h, int nE);
     ~LinkedList<T>();
     

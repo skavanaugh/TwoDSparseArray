@@ -3,22 +3,20 @@
 #include <string>
 #include <cassert>
 
-/*
 template <typename T>
-  private:
-    Node<T>* head;
-    int numElements;
-    LinkedList<T>();
-*/
+LinkedList<T>::LinkedList() {
+  head=0;
+  numElements=0;
+}
 
 template <typename T>
-LinkedList<T>::LinkedList<T>(Node<T>* h, int nE) {
+LinkedList<T>::LinkedList(Node<T>* h, int nE) {
   head=h;
   numElements=nE;
 }
 
 template <typename T>
-LinkedList<T>::~LinkedList<T>() {}
+LinkedList<T>::~LinkedList() {}
     
 template <typename T>
 Node<T>* LinkedList<T>::getHead() {
@@ -45,16 +43,14 @@ bool LinkedList<T>::isEmpty() {
   return numElements==0;
 }
     
-    /*
-    T getValue();
-    void setValue(T v);
-    int getRow();
-    int getCol();
-    Node<T>* getNextRight();
-    Node<T>* getNextDown();
-    void setNextRight(Node<T>* n);
-    void setNextDown(Node<T>* n);
-    */
+//    T getValue();
+//    void setValue(T v);
+//    int getRow();
+//    int getCol();
+//    Node<T>* getNextRight();
+//    Node<T>* getNextDown();
+//    void setNextRight(Node<T>* n);
+//    void setNextDown(Node<T>* n);
 
 
 template class LinkedList<int>;
