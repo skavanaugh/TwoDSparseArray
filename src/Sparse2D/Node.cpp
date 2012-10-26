@@ -1,11 +1,15 @@
-#include <string>
 #include "Node.h"
+#include <string>
+#include <cassert>
 
 template <typename T>
-Node<T>::Node(T v) {
+Node<T>::Node(T v, int r, int c) {
+  assert(r>=0 && c>=0);
   value=v;
-  nextRow=0;
-  nextCol=0;
+  row=r;
+  col=c;
+  nextRight=0;
+  nextDown=0;
 }
 
 template <typename T>
@@ -17,23 +21,33 @@ T Node<T>::getValue() {
 }
 
 template <typename T>
-Node<T>* Node<T>::getNextRow() {
-  return nextRow;
+int Node<T>::getRow() {
+  return row;
 }
 
 template <typename T>
-Node<T>* Node<T>::getNextCol() {
-  return nextCol;
+int Node<T>::getCol() {
+  return col;
 }
 
 template <typename T>
-void Node<T>::setNextRow(Node<T> &n) {
-  nextRow=&n;
+Node<T>* Node<T>::getNextRight() {
+  return nextRight;
 }
 
 template <typename T>
-void Node<T>::setNextCol(Node<T> &n) {
-  nextCol=&n;
+Node<T>* Node<T>::getNextDown() {
+  return nextDown;
+}
+
+template <typename T>
+void Node<T>::setNextRight(Node<T> &n) {
+  nextRight=&n;
+}
+
+template <typename T>
+void Node<T>::setNextDown(Node<T> &n) {
+  nextDown=&n;
 }
 
 template class Node<int>;
