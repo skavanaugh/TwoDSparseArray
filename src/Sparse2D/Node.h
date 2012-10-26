@@ -14,6 +14,7 @@ class Node {
     Node<T>(T v, int r, int c);
     ~Node<T>();
     T getValue();
+    void setValue(T v);
     int getRow();
     int getCol();
     Node<T>* getNextRight();

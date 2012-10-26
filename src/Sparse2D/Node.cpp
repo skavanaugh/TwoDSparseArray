@@ -21,6 +21,11 @@ T Node<T>::getValue() {
 }
 
 template <typename T>
+void Node<T>::setValue(T v) {
+  value=v;
+}
+
+template <typename T>
 int Node<T>::getRow() {
   return row;
 }

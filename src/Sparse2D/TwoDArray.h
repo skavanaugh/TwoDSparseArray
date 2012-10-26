@@ -7,12 +7,18 @@ template <typename T>
 class TwoDArray {
 
   private:
-    int rows;
-    int columns;
+    int rows;  // total # of rows
+    int columns;  // total # of columns
     T defaultValue;
-    Node<T>* rowArray;
-    Node<T>* colArray;
-  
+    Node<T>** rowArray; //array of Node<T> pointers
+    Node<T>** colArray; //array of Node<T> pointers
+    
+    void deleteAllNodesRight(Node<T>* n);  // private helper methods
+    Node<T>* getPrevLeft(int r, int c);
+    Node<T>* getPrevUp(int r, int c);
+    bool find(int r, int c);
+    T findValue(int r, int c);
+
   public:
     //TwoDArray<T>();
     TwoDArray<T>(int r, int c, T def);
