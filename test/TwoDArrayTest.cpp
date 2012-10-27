@@ -1,5 +1,6 @@
 #include "gtest/gtest.h"
-#include "../../include/TwoDArray.h"
+#include "../include/TwoDArray.h"
+#include <string>
 using std::string;
 
 TEST(TwoDArrayTest,insert) {
@@ -9,14 +10,14 @@ TEST(TwoDArrayTest,insert) {
     iArr->insert(i,2*i,7*i);
   }
 
-  for (int i=0; i<25; i++) {
+  for (int i=0; i<5; i++) {
     EXPECT_EQ(iArr->access(i,2*i),7*i);
     EXPECT_EQ(iArr->access(25+i,50+2*i),0);
   }
 
-  iArr->insert(12,24,36);
+  iArr->insert(4,10,36);
   iArr->insert(0,0,999);
-  EXPECT_EQ(iArr->access(12,24),36);
+  EXPECT_EQ(iArr->access(4,10),36);
   EXPECT_EQ(iArr->access(0,0),999);
 
   delete iArr;
@@ -32,10 +33,10 @@ TEST(TwoDArrayTest,insert) {
     EXPECT_EQ(dArr->access(25+i,50+2*i),2.71828);
   }
 
-  dArr->insert(12,24,36.3636);
+  dArr->insert(4,10,36.3636);
   dArr->insert(0,0,999.99);
-  EXPECT_EQ(iArr->access(12,24),36.3636);
-  EXPECT_EQ(iArr->access(0,0),999.99);
+  EXPECT_EQ(dArr->access(4,10),36.3636);
+  EXPECT_EQ(dArr->access(0,0),999.99);
 
   delete dArr;
 
@@ -50,9 +51,9 @@ TEST(TwoDArrayTest,insert) {
     EXPECT_EQ(sArr->access(25+i,50+2*i),"");
   }
 
-  sArr->insert(12,24,"GitHub");
+  sArr->insert(2,4,"GitHub");
   sArr->insert(0,0,"Ruby");
-  EXPECT_EQ(sArr->access(12,24),"GitHub");
+  EXPECT_EQ(sArr->access(2,4),"GitHub");
   EXPECT_EQ(sArr->access(0,0),"Ruby");
 
   delete sArr;
@@ -110,9 +111,9 @@ TEST(TwoDArrayTest,remove) {
  
   for (int i=0; i<25; i++) {
     dArr->insert(2*i,4*i,3.33);
-    dArr->insert(2*i+1,3,-4.75);
+    dArr->insert(2*i+1,3,4.75);
     EXPECT_EQ(dArr->access(2*i,4*i),3.33);
-    EXPECT_EQ(dArr->access(2*i+1,3),-4.75);
+    EXPECT_EQ(dArr->access(2*i+1,3),4.75);
     dArr->remove(2*i,4*i);
     dArr->remove(2*i+1,3);
     EXPECT_EQ(dArr->access(2*i,4*i),0);
@@ -139,45 +140,61 @@ TEST(TwoDArrayTest,remove) {
   delete sArr;
 }
 
-// no Google test implemented for print method
+// no Google test currently implemented for the print method.  if i have time later, i will redirect output to a file in order to incorporate the testing suite.
 
 TEST(TwoDArrayTest,getNumRows) {
 
   TwoDArray<int>* iArr = new TwoDArray<int>(150,100,0);
   EXPECT_EQ(iArr->getNumRows(),150);
   delete iArr;
-
-  TwoDArray<int>* iArr[10];
-  for (int i=0; i<10; i++) {
-    iArr[i] = new TwoDArray<int>(2*i+5,4*i+3,0)
-    EXPECT_EQ(iArr[i]->getNumRows(),2*i+5);    
-  }
-  delete [] iArr;
-
+  
+  TwoDArray<int>* iArr2 = new TwoDArray<int>(24,92,55);
+  EXPECT_EQ(iArr2->getNumRows(),24);
+  delete iArr2;
+ 
   TwoDArray<double>* dArr = new TwoDArray<double>(150,100,99.45);
   EXPECT_EQ(dArr->getNumRows(),150);
   delete dArr;
-
-  TwoDArray<double>* dArr[10];
-  for (int i=0; i<10; i++) {
-    dArr[i] = new TwoDArray<double>(2*i+5,4*i+3,3.99)
-    EXPECT_EQ(dArr[i]->getNumRows(),2*i+5);    
-  }
-  delete [] dArr;
-
+ 
+  TwoDArray<double>* dArr2 = new TwoDArray<double>(24,92,-4.75);
+  EXPECT_EQ(dArr->getNumRows(),24);
+  delete dArr;
+ 
   TwoDArray<string>* sArr = new TwoDArray<string>(150,100,"sparse");
   EXPECT_EQ(sArr->getNumRows(),150);
   delete sArr;
 
-  TwoDArray<string>* sArr[10];
-  for (int i=0; i<10; i++) {
-    sArr[i] = new TwoDArray<string>(2*i+5,4*i+3,"tick tock")
-    EXPECT_EQ(sArr[i]->getNumRows(),2*i+5);    
-  }
-  delete [] sArr;
+  TwoDArray<string>* sArr2 = new TwoDArray<string>(24,92,"song");
+  EXPECT_EQ(sArr2->getNumRows(),24);
+  delete sArr2;
 }
 
+TEST(TwoDArrayTest,getNumCols) {
 
-TEST(TwoDArrayTest,remove) {
+  TwoDArray<int>* iArr = new TwoDArray<int>(150,100,0);
+  EXPECT_EQ(iArr->getNumCols(),100);
+  delete iArr;
+
+  TwoDArray<int>* iArr2 = new TwoDArray<int>(65,60,5);
+  EXPECT_EQ(iArr2->getNumCols(),60);
+  delete iArr2;
+
+  TwoDArray<double>* dArr = new TwoDArray<double>(150,100,99.45);
+  EXPECT_EQ(dArr->getNumCols(),100);
+  delete dArr;
+
+  TwoDArray<double>* dArr2 = new TwoDArray<double>(1,33,0.75);
+  EXPECT_EQ(dArr2->getNumCols(),33);
+  delete dArr2;
+
+  TwoDArray<string>* sArr = new TwoDArray<string>(150,100,"sparse");
+  EXPECT_EQ(sArr->getNumCols(),100);
+  delete sArr; 
+
+  TwoDArray<string>* sArr2 = new TwoDArray<string>(55,9,"sleep");
+  EXPECT_EQ(sArr2->getNumCols(),9);
+  delete sArr2;
 
 }
+
+// not explicitly Google testing Constructors and Destructors with Google testing suite.  though certainly not rigorous, through much object instantiation and destruction, they have been tested indirectly through out these tests.
