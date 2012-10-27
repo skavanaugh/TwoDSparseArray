@@ -7,14 +7,10 @@ template <typename T>
 class TwoDArray {
 
   private:
-    //int rows;
-    //int columns;
     T defaultValue;
     std::vector<std::vector<T> > theVector;
-    //std::vector<T> the1DVector;
     
   public:
-    //TwoDArray<T>();
     TwoDArray<T>(int r, int c, T def);
     ~TwoDArray<T>();
     void insert(int r, int c, T value);

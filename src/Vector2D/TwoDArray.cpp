@@ -2,44 +2,21 @@
 #include <cassert>
 #include <iostream>
 #include <string>
+#include <vector>
 
 using std::cout;
 using std::endl;
-
-/* template <typename T>
-TwoDArray<T>::TwoDArray() {
-  rows=10;
-  columns=10;
-  defaultValue=0;
-
-  theArray=new T*[rows];
-      
-  for (int i=0; i<rows; i++) {
-    theArray[i]=new T[columns];
-  }
-
-  for (int i=0; i<rows; i++) {
-    for (int j=0; j<columns; j++) {
-      theArray[i][j]=defaultValue;
-    }
-  }
-} */
  
 template <typename T> 
 TwoDArray<T>::TwoDArray(int r, int c, T def) {
   assert(r>0 && c>0);
-  //rows=r;
-  //columns=c;
+  
   defaultValue=def;
-
-  theVector= std::vector<std::vector<T> >(r,std::vector<T>(c,defaultValue));
-      
+  theVector=std::vector<std::vector<T> >(r,std::vector<T>(c,defaultValue));
 }
   
 template <typename T>
-TwoDArray<T>::~TwoDArray() {
-//  delete theVector;
-}
+TwoDArray<T>::~TwoDArray() { }
 
 template <typename T>
 void TwoDArray<T>::insert(int r, int c, T val) {
@@ -47,8 +24,6 @@ void TwoDArray<T>::insert(int r, int c, T val) {
   assert(c>=0 && c<getNumCols());
 
   theVector[r][c]=val;
-  
-  // deal with resizing theVector if r>=rows and/or c>=columns
 }
     
 template <typename T>
@@ -78,6 +53,7 @@ void TwoDArray<T>::print() {
     } 
     cout << " ]" << endl;
   }
+  cout << endl;
 }
 
 template <typename T>

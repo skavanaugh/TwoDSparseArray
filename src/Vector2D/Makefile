@@ -1,5 +1,5 @@
 CPP = g++
-CPPFLAGS = -Wall -Wextra
+CPPFLAGS = -Wall -Wextra -g
 
 test: test.cpp TwoDArray.o
 	$(CPP) $(CPPFLAGS) -o test test.cpp TwoDArray.o
