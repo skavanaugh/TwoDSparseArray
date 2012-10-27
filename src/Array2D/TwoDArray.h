@@ -11,7 +11,6 @@ class TwoDArray {
     T** theArray;
 
   public:
-    //TwoDArray<T>();
     TwoDArray<T>(int r, int c, T def);
     ~TwoDArray<T>();
     void insert(int r, int c, T value);
