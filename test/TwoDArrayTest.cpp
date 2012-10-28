@@ -7,33 +7,45 @@ TEST(TwoDArrayTest, ConstructDestruct) {
 
   TwoDArray<int> iArray[3]={TwoDArray<int>(3,3,3),TwoDArray<int>(4,5,6),TwoDArray<int>(5,7,9)};
   for (int i=0;i<3;i++) {
+    EXPECT_EQ(iArray[i].getNumRows(),i+3);
+    EXPECT_EQ(iArray[i].getNumCols(),2*i+3);
     EXPECT_EQ(iArray[i].access(i,i),3*i+3);
   }
 
   for (int i=0;i<100;i++) {
     TwoDArray<int>* iArr = new TwoDArray<int>(i+1,i+1,0);
+    EXPECT_EQ(iArr->getNumRows(),i+1);
+    EXPECT_EQ(iArr->getNumCols(),i+1);
     EXPECT_EQ(iArr->access(i,i),0);
     delete iArr;
   }
 
   TwoDArray<double> dArray[3]={TwoDArray<double>(3,3,0.3),TwoDArray<double>(4,5,0.3),TwoDArray<double>(5,7,0.3)};
   for (int i=0;i<3;i++) {
+    EXPECT_EQ(dArray[i].getNumRows(),i+3);
+    EXPECT_EQ(dArray[i].getNumCols(),2*i+3);
     EXPECT_EQ(dArray[i].access(i,i),0.3);
   }
 
   for (int i=0;i<100;i++) {
     TwoDArray<double>* dArr = new TwoDArray<double>(i+1,i+1,0.0);
+    EXPECT_EQ(dArr->getNumRows(),i+1);
+    EXPECT_EQ(dArr->getNumCols(),i+1);
     EXPECT_EQ(dArr->access(i,i),0.0);
     delete dArr;
   }  
 
   TwoDArray<string> sArray[3]={TwoDArray<string>(3,3,"gtest"),TwoDArray<string>(4,5,"gtest"),TwoDArray<string>(5,7,"gtest")};
   for (int i=0;i<3;i++) {
+    EXPECT_EQ(sArray[i].getNumRows(),i+3);
+    EXPECT_EQ(sArray[i].getNumCols(),2*i+3);
     EXPECT_EQ(sArray[i].access(i,i),"gtest");
   }
 
   for (int i=0;i<100;i++) {
     TwoDArray<string>* sArr = new TwoDArray<string>(i+1,i+1,"");
+    EXPECT_EQ(sArr->getNumRows(),i+1);
+    EXPECT_EQ(sArr->getNumCols(),i+1);
     EXPECT_EQ(sArr->access(i,i),"");
     delete sArr;
   }
