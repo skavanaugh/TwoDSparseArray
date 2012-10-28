@@ -3,6 +3,42 @@
 #include <string>
 using std::string;
 
+TEST(TwoDArrayTest, ConstructDestruct) {
+
+  TwoDArray<int> iArray[3]={TwoDArray<int>(3,3,3),TwoDArray<int>(4,5,6),TwoDArray<int>(5,7,9)};
+  for (int i=0;i<3;i++) {
+    EXPECT_EQ(iArray[i].access(i,i),3*i+3);
+  }
+
+  for (int i=0;i<100;i++) {
+    TwoDArray<int>* iArr = new TwoDArray<int>(i+1,i+1,0);
+    EXPECT_EQ(iArr->access(i,i),0);
+    delete iArr;
+  }
+
+  TwoDArray<double> dArray[3]={TwoDArray<double>(3,3,0.3),TwoDArray<double>(4,5,0.3),TwoDArray<double>(5,7,0.3)};
+  for (int i=0;i<3;i++) {
+    EXPECT_EQ(dArray[i].access(i,i),0.3);
+  }
+
+  for (int i=0;i<100;i++) {
+    TwoDArray<double>* dArr = new TwoDArray<double>(i+1,i+1,0.0);
+    EXPECT_EQ(dArr->access(i,i),0.0);
+    delete dArr;
+  }  
+
+  TwoDArray<string> sArray[3]={TwoDArray<string>(3,3,"gtest"),TwoDArray<string>(4,5,"gtest"),TwoDArray<string>(5,7,"gtest")};
+  for (int i=0;i<3;i++) {
+    EXPECT_EQ(sArray[i].access(i,i),"gtest");
+  }
+
+  for (int i=0;i<100;i++) {
+    TwoDArray<string>* sArr = new TwoDArray<string>(i+1,i+1,"");
+    EXPECT_EQ(sArr->access(i,i),"");
+    delete sArr;
+  }
+}
+
 TEST(TwoDArrayTest,insert) {
   TwoDArray<int>* iArr = new TwoDArray<int>(50,100,0);
   
@@ -21,6 +57,12 @@ TEST(TwoDArrayTest,insert) {
   EXPECT_EQ(iArr->access(0,0),999);
 
   delete iArr;
+
+  TwoDArray<int> iArray[3]={TwoDArray<int>(3,3,3),TwoDArray<int>(4,5,6),TwoDArray<int>(5,7,0)};
+  for (int i=0;i<3;i++) {
+    iArray[i].insert(i,i,100);
+    EXPECT_EQ(iArray[i].access(i,i),100);
+  }
 
   TwoDArray<double>* dArr = new TwoDArray<double>(50,100,2.71828);
   
@@ -68,6 +110,11 @@ TEST(TwoDArrayTest,access) {
   }
   delete iArr;
 
+  TwoDArray<int> iArray[3]={TwoDArray<int>(3,3,3),TwoDArray<int>(4,5,6),TwoDArray<int>(5,7,9)};
+  for (int i=0;i<3;i++) {
+    EXPECT_EQ(iArray[i].access(i,i),3*i+3);
+  }
+
   TwoDArray<double>* dArr = new TwoDArray<double>(150,100,1.414);
 
   for (int i=0; i<25; i++) {
@@ -102,6 +149,14 @@ TEST(TwoDArrayTest,remove) {
     EXPECT_EQ(iArr->access(2*i+1,3),0);
   }
   delete iArr;
+ 
+  TwoDArray<int> iArray[3]={TwoDArray<int>(3,3,3),TwoDArray<int>(4,5,6),TwoDArray<int>(5,7,9)};
+  for (int i=0;i<3;i++) {
+    iArray[i].insert(2,2,2);
+    EXPECT_EQ(iArray[i].access(2,2),2);
+    iArray[i].remove(2,2);
+    EXPECT_EQ(iArray[i].access(2,2),3*i+3);
+  }
 
   TwoDArray<double>* dArr = new TwoDArray<double>(150,100,0);
 
@@ -140,7 +195,7 @@ TEST(TwoDArrayTest,remove) {
   delete sArr;
 }
 
-// no Google test currently implemented for the print method.  if i have time later, i will redirect output to a file in order to incorporate the testing suite.
+// no Google test currently implemented for the print method.  if i have time later, i will redirect output to a file and test.
 
 TEST(TwoDArrayTest,getNumRows) {
 
@@ -151,6 +206,11 @@ TEST(TwoDArrayTest,getNumRows) {
   TwoDArray<int>* iArr2 = new TwoDArray<int>(24,92,55);
   EXPECT_EQ(iArr2->getNumRows(),24);
   delete iArr2;
+
+  TwoDArray<int> iArray[3]={TwoDArray<int>(3,3,3),TwoDArray<int>(4,5,6),TwoDArray<int>(5,7,0)};
+  for (int i=0;i<3;i++) {
+    EXPECT_EQ(iArray[i].getNumRows(),i+3);
+  }
  
   TwoDArray<double>* dArr = new TwoDArray<double>(150,100,99.45);
   EXPECT_EQ(dArr->getNumRows(),150);
@@ -178,6 +238,11 @@ TEST(TwoDArrayTest,getNumCols) {
   TwoDArray<int>* iArr2 = new TwoDArray<int>(65,60,5);
   EXPECT_EQ(iArr2->getNumCols(),60);
   delete iArr2;
+
+  TwoDArray<int> iArray[3]={TwoDArray<int>(3,3,3),TwoDArray<int>(4,5,6),TwoDArray<int>(5,7,0)};
+  for (int i=0;i<3;i++) {
+    EXPECT_EQ(iArray[i].getNumCols(),2*i+3);
+  }
 
   TwoDArray<double>* dArr = new TwoDArray<double>(150,100,99.45);
   EXPECT_EQ(dArr->getNumCols(),100);

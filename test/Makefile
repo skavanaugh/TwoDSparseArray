@@ -2,9 +2,14 @@ BUILD = ../build
 TEST = ../test
 LIB = ../lib
 SRC = ../src
-LL = $(SRC)/LinkedListQueue
-STL = $(SRC)/ListQueue
-ARR = $(SRC)/AQueue
+SPARSE = $(SRC)/Sparse2D2
+VEC = $(SRC)/Vector2D
+VECH = $(SRC)/Vector2Dheap
+ARR = $(SRC)/Array2D
+
+PRE = TwoDArray
+LPRE = LinkedList
+NPRE = Node
 
 GTEST = $(LIB)/gtest-1.6.0
 GTEST_MAINA = $(GTEST)/make/gtest_main.a
@@ -14,37 +19,47 @@ GTEST_INCLUDES = -I$(GTEST) -I$(GTEST)/include
 CPP = g++
 CPPFLAGS = -Wall -Wextra
 
-all: LLtest STLtest Atest
+all: $(TEST)/Vtest $(TEST)/VHtest $(TEST)/Atest $(TEST)/Stest
 
-LLtest: Queue.cpp $(LL)/Queue.o $(LL)/Node.o $(GTEST_MAINA)
-	$(CPP) $(CFLAGS) $(GTEST_INCLUDES) -pthread -o LLtest Queue.cpp $(LL)/Queue.o $(LL)/Node.o $(GTEST_MAINA)
+$(TEST)/Stest: $(TEST)/$(PRE)Test.cpp $(SPARSE)/$(PRE).o $(SPARSE)/$(LPRE).o $(SPARSE)/$(NPRE).o $(GTEST_MAINA)
+	$(CPP) $(CFLAGS) $(GTEST_INCLUDES) -pthread -o Stest $(TEST)/$(PRE)Test.cpp $(SPARSE)/$(PRE).o $(SPARSE)/$(LPRE).o $(SPARSE)/$(NPRE).o $(GTEST_MAINA)
 
-$(LL)/Queue.o: $(LL)/Queue.cpp $(LL)/Queue.h $(LL)/Node.o
-	cd $(LL); $(MAKE)
+$(SPARSE)/$(PRE).o: $(SPARSE)/$(PRE).cpp $(SPARSE)/$(PRE).h $(SPARSE)/$(LPRE).o $(SPARSE)/$(NPRE).o
+	cd $(SPARSE); $(MAKE)
 
-$(LL)/Node.o: $(LL)/Node.cpp $(LL)/Node.h
-	cd $(LL); $(MAKE)
+$(SPARSE)/$(LPRE).o: $(SPARSE)/$(LPRE).cpp $(SPARSE)/$(LPRE).h $(SPARSE)/$(NPRE).o
+	cd $(SPARSE); $(MAKE)
 
-STLtest: Queue.cpp $(STL)/Queue.o $(GTEST_MAINA)
-	$(CPP) $(CFLAGS) $(GTEST_INCLUDES) -pthread -o STLtest Queue.cpp $(STL)/Queue.o $(GTEST_MAINA)
+$(SPARSE)/Node.o: $(SPARSE)/Node.cpp $(SPARSE)/Node.h
+	cd $(SPARSE); $(MAKE)
 
-$(STL)/Queue.o: $(STL)/Queue.cpp $(STL)/Queue.h
-	cd $(STL); $(MAKE)
+$(TEST)/Vtest: $(TEST)/$(PRE)Test.cpp $(VEC)/$(PRE).o $(GTEST_MAINA)
+	$(CPP) $(CFLAGS) $(GTEST_INCLUDES) -pthread -o Vtest $(TEST)/$(PRE)Test.cpp $(VEC)/$(PRE).o $(GTEST_MAINA)
 
-Atest: Queue.cpp $(ARR)/Queue.o $(GTEST_Maina)
-	$(CPP) $(CFLAGS) $(GTEST_INCLUDES) -pthread -o Atest Queue.cpp $(ARR)/Queue.o $(GTEST_MAINA)
+$(VEC)/$(PRE).o: $(VEC)/$(PRE).cpp $(VEC)/$(PRE).h
+	cd $(VEC); $(MAKE)
 
-$(ARR)/Queue.o: $(ARR)/Queue.cpp $(ARR)/Queue.h
+$(TEST)/VHtest: $(TEST)/$(PRE)Test.cpp $(VECH)/$(PRE).o $(GTEST_MAINA)
+	$(CPP) $(CFLAGS) $(GTEST_INCLUDES) -pthread -o VHtest $(TEST)/$(PRE)Test.cpp $(VECH)/$(PRE).o $(GTEST_MAINA)
+
+$(VECH)/$(PRE).o: $(VECH)/$(PRE).cpp $(VECH)/$(PRE).h
+	cd $(VECH); $(MAKE)
+
+$(TEST)/Atest: $(TEST)/$(PRE)Test.cpp $(ARR)/$(PRE).o $(GTEST_Maina)
+	$(CPP) $(CFLAGS) $(GTEST_INCLUDES) -pthread -o Atest $(TEST)/$(PRE)Test.cpp $(ARR)/$(PRE).o $(GTEST_MAINA)
+
+$(ARR)/$(PRE).o: $(ARR)/$(PRE).cpp $(ARR)/$(PRE).h
 	cd $(ARR); $(MAKE) 
 
 $(GTEST_MAINA): $(GTEST)/src/*.cc $(GTEST)/src/*.h
 	cd $(GTEST)/make; make
 
 clean:
-	rm -f LLtest STLtest Atest
+	rm -f $(TEST)/*test
 	rm -f $(GTEST_MAINA)
-	cd $(LL); $(MAKE) clean
-	cd $(STL); $(MAKE) clean
+	cd $(SPARSE); $(MAKE) clean
+	cd $(VEC); $(MAKE) clean
+	cd $(VECH); $(MAKE) clean
 	cd $(ARR); $(MAKE) clean
 	cd $(GTEST)/make; $(MAKE) clean
 	cd $(TEST)
