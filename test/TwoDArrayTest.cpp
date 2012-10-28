@@ -259,7 +259,5 @@ TEST(TwoDArrayTest,getNumCols) {
   TwoDArray<string>* sArr2 = new TwoDArray<string>(55,9,"sleep");
   EXPECT_EQ(sArr2->getNumCols(),9);
   delete sArr2;
-
 }
 
-// not explicitly Google testing Constructors and Destructors with Google testing suite.  though certainly not rigorous, through much object instantiation and destruction, they have been tested indirectly through out these tests.
