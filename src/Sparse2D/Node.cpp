@@ -37,22 +37,26 @@ int Node<T>::getCol() {
 
 template <typename T>
 Node<T>* Node<T>::getNextRight() {
+  assert(this!=0);
   return nextRight;
 }
 
 template <typename T>
 Node<T>* Node<T>::getNextDown() {
+  assert(this!=0);
   return nextDown;
 }
 
 template <typename T>
-void Node<T>::setNextRight(Node<T> &n) {
-  nextRight=&n;
+void Node<T>::setNextRight(Node<T>* n) {
+  assert(this!=0);
+  nextRight=n;
 }
 
 template <typename T>
-void Node<T>::setNextDown(Node<T> &n) {
-  nextDown=&n;
+void Node<T>::setNextDown(Node<T>* n) {
+  assert(this!=0);
+  nextDown=n;
 }
 
 template class Node<int>;

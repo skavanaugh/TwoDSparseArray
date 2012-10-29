@@ -3,81 +3,81 @@
 #include <iostream>
 #include <string>
 #include "Node.h"
+#include "LinkedList.h"
 
 using std::cout;
 using std::endl;
 
-template <typename T>
-void TwoDArray<T>::deleteAllNodesRight(Node<T>* n) {
-/*  if (n==0) {  // base case
-    delete n;
-    return;
-  }
-  else { // recursive case   
-    Node<T>* tmp=n;
-    n=n->getNextRight();
-    deleteAllNodesRight(n);
-    delete tmp;
-  } */
-}
 
 template <typename T>
-Node<T>* TwoDArray<T>::getPrevLeft(int r, int c) {
+Node<T>* TwoDArray<T>::findNode(int r, int c) {
   assert(r>=0 && r<rows);
   assert(c>=0 && c<columns);
-  
-  Node<T>* curr=rowArray[r];
-  
-  if (curr==0) return curr;
+
+  int rListSize=rowArray[r]->getSize();
+  int cListSize=colArray[c]->getSize();
+  Node<T>* curr=0;
+
+  if (rListSize==0 || cListSize==0)
+    return 0;
+  else if (rListSize<=cListSize) {
+    curr=rowArray[r]->getHead();
+    while (curr!=0) {
+      if (curr->getCol()==c)
+        return curr;
+      else if (curr->getCol()>c)
+        return 0;
+      else curr=curr->getNextRight();
+    }
+    return 0;
+  }
   else {
-    while(curr->getNextRight()!=0 && curr->getNextRight()->getCol()<c) {
+    curr=colArray[c]->getHead();
+    while (curr!=0) {
+      if (curr->getRow()==r)
+        return curr;
+      else if (curr->getRow()>r)
+        return 0;
+      else curr=curr->getNextDown();
+    }
+    return 0;
+  }
+} 
+
+template <typename T>
+bool TwoDArray<T>::getNodes(int r, int c, Node<T>* &pLeft, Node<T>* &pUp) {
+  assert(r>=0 && r<rows);
+  assert(c>=0 && c<columns);
+
+  int rListSize=rowArray[r]->getSize();
+  int cListSize=colArray[c]->getSize();
+  Node<T>* curr=0;
+  bool result=false;
+
+  if (rListSize>0) {
+    curr=rowArray[r]->getHead();
+    while (curr!=0 && curr->getCol()<c) {
+      pLeft=curr;
       curr=curr->getNextRight();
     }
+    if (curr==0)
+      result=false;
+    else if (curr->getCol()==c)
+      result=true;
+    else 
+      result=false;
   }
-  // cout << curr->getCol() << endl;
-  return curr;
-}
 
-template <typename T>
-Node<T>* TwoDArray<T>::getPrevUp(int r, int c) {
-  assert(r>=0 && r<rows);
-  assert(c>=0 && c<columns);
-  
-  Node<T>* curr=colArray[c];
-  
-  if (curr==0) return curr;
-  else {
-    while(curr->getNextDown()!=0 && curr->getNextDown()->getRow()<r) {
+  if (cListSize>0) {
+    curr=colArray[c]->getHead();
+    while(curr!=0 && curr->getRow()<r) {
+      pUp=curr;
       curr=curr->getNextDown();
     }
   }
-  // cout << curr->getRow() << endl;
-  return curr;
-}
+  return result;
+} 
 
-template <typename T>
-bool TwoDArray<T>::find(int r, int c) {
-  
-  Node<T>* prevLeft=getPrevLeft(r,c);
-  Node<T>* prevUp=getPrevUp(r,c);
-
-  if (prevLeft->getNextRight()->getCol()==c && prevUp->getNextDown()->getRow()==r) {
-    return true;
-  } else return false;
-}
-
-template <typename T>
-T TwoDArray<T>::findValue(int r, int c) {
-  
-  Node<T>* prevLeft=getPrevLeft(r,c);
-  Node<T>* prevUp=getPrevUp(r,c);
-
-  if (prevLeft->getNextRight()->getCol()==c && prevUp->getNextDown()->getRow()==r) {
-    return prevLeft->getNextRight()->getValue();
-  } else return defaultValue;
-}
-
- 
 template <typename T> 
 TwoDArray<T>::TwoDArray(int r, int c, T def) {
   assert(r>0 && c>0);
@@ -85,26 +85,45 @@ TwoDArray<T>::TwoDArray(int r, int c, T def) {
   columns=c;
   defaultValue=def;
 
-  rowArray=new Node<T>*[rows];
-  colArray=new Node<T>*[columns];
+  rowArray=new LinkedList<T>*[rows];
+  colArray=new LinkedList<T>*[columns];
 
   for (int i=0; i<rows; i++) {
-    rowArray[i]=0;
+    rowArray[i]=new LinkedList<T>();    
   }
 
   for (int j=0; j<columns; j++) {
-    colArray[j]=0;
+    colArray[j]=new LinkedList<T>(); 
   }
-
 }
   
 template <typename T>
 TwoDArray<T>::~TwoDArray() {
-  delete [] colArray;
-  //for (int i=0; i<rows; i++) {
-  //  deleteAllNodesRight(rowArray[i]);
-  //}
+
+  Node<T>* curr=0;
+  Node<T>* tmp=0;
+
+  for (int i=0;i<rows;i++) {
+    if (!(rowArray[i]->isEmpty())) {
+      curr=rowArray[i]->getHead();
+      while (curr!=0) {
+        tmp=curr;
+        delete tmp;
+        curr=curr->getNextRight();
+      }
+    }
+  }
+/*
+  for (int j=0;j<rows;j++) {
+    delete [] rowArray[j];
+  }
+  
+  for (int k=0;k<columns;k++) {
+    delete [] colArray[k];
+  }  
+*/  
   delete [] rowArray;
+  delete [] colArray;
 }
 
 template <typename T>
@@ -112,33 +131,60 @@ void TwoDArray<T>::insert(int r, int c, T val) {
   assert(r>=0 && r<rows);
   assert(c>=0 && c<columns);
 
-  Node<T>* prevLeft=getPrevLeft(r,c);
+  Node<T>* pLeft=0;
+  Node<T>* pUp=0;
+  Node<T>* newNode=0;
 
-  if (find(r,c)) {
-    prevLeft->getNextRight()->setValue(val);
-    return;
-  } else 
-  {
-    Node<T>* prevUp=getPrevUp(r,c);
-    Node<T>* newNode=new Node<T>(val,r,c);
-    newNode->setNextRight(*(prevLeft->getNextRight()));
-    newNode->setNextDown(*(prevUp->getNextDown()));
-    prevLeft->setNextRight(*newNode);
-    prevUp->setNextDown(*newNode);
+  if (getNodes(r,c,pLeft,pUp)) {
+    if (pLeft==0)
+      rowArray[r]->getHead()->setValue(val);
+    else
+      pLeft->getNextRight()->setValue(val);
   }
+
+  else {
+    newNode=new Node<T>(val,r,c);
+    if (pLeft==0) {
+      if (rowArray[r]->isEmpty())
+        rowArray[r]->setHead(newNode);
+      else {
+        newNode->setNextRight(rowArray[r]->getHead());
+        rowArray[r]->setHead(newNode);
+      }
+    }
+    else {
+      newNode->setNextRight(pLeft->getNextRight());
+      pLeft->setNextRight(newNode);
+    }
+  }
+  rowArray[r]->setSize((rowArray[r]->getSize())+1);
+
+  if (pUp==0) {
+    if (colArray[c]->isEmpty())
+      colArray[c]->setHead(newNode);
+    else {
+      newNode->setNextDown(colArray[c]->getHead());
+      colArray[c]->setHead(newNode);
+    }
+  }
+  else {
+    newNode->setNextDown(pUp->getNextDown());
+    pUp->setNextDown(newNode);
+  }
+  colArray[c]->setSize((colArray[c]->getSize())+1);
+
 }
     
 template <typename T>
 T TwoDArray<T>::access(int r, int c) {
   assert(r>=0 && r<rows);
   assert(c>=0 && c<columns);
-
-  if (find(r,c)) {
-    Node<T>* prevLeft=getPrevLeft(r,c);
-    return prevLeft->getNextRight()->getValue();
-  } else {
+ 
+  Node<T>* curr=findNode(r,c);
+  if (curr==0)
     return defaultValue;
-  }
+  else
+    return curr->getValue();  
 }
 
 template <typename T>
@@ -146,14 +192,32 @@ void TwoDArray<T>::remove(int r, int c) {
   assert(r>=0 && r<rows);
   assert(c>=0 && c<columns);
 
-  if (find(r,c)) {
-    Node<T>* prevLeft=getPrevLeft(r,c);
-    Node<T>* prevUp=getPrevUp(r,c);
-    Node<T>* curr=prevLeft->getNextRight();
-    prevLeft->setNextRight(*(curr->getNextRight()));
-    prevUp->setNextDown(*(curr->getNextDown()));
-    delete curr;
+  Node<T>* pLeft=0;
+  Node<T>* pUp=0;
+  Node<T>* curr=0;
+
+  if (!getNodes(r,c,pLeft,pUp)) 
+    return;
+  
+  if (pLeft==0) {
+    curr=rowArray[r]->getHead();
+    rowArray[r]->setHead(curr->getNextRight());
   }
+  else {
+    curr=pLeft->getNextRight();
+    pLeft->setNextRight(curr->getNextRight());
+  }
+  rowArray[r]->setSize((rowArray[r]->getSize())-1);
+
+  if (pUp==0) {
+    colArray[c]->setHead(curr->getNextDown());
+  }
+  else {
+    pUp->setNextDown(curr->getNextDown());
+  }
+  colArray[c]->setSize((colArray[c]->getSize())-1);
+  
+  delete curr;
 }
 
 template <typename T>
@@ -167,6 +231,7 @@ void TwoDArray<T>::print() {
     } 
     cout << " ]" << endl;
   }
+  cout << endl;
 }
 
 template <typename T>
