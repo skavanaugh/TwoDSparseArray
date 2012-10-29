@@ -1,7 +1,10 @@
 #include "gtest/gtest.h"
 #include "../include/TwoDArray.h"
+//#include "../src/Sparse2D/TwoDArray.h"
 #include <string>
 using std::string;
+using std::cout;
+using std::endl;
 
 TEST(TwoDArrayTest, ConstructDestruct) {
 
@@ -62,7 +65,7 @@ TEST(TwoDArrayTest,insert) {
     EXPECT_EQ(iArr->access(i,2*i),7*i);
     EXPECT_EQ(iArr->access(25+i,50+2*i),0);
   }
-
+  
   iArr->insert(4,10,36);
   iArr->insert(0,0,999);
   EXPECT_EQ(iArr->access(4,10),36);

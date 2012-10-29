@@ -140,6 +140,7 @@ void TwoDArray<T>::insert(int r, int c, T val) {
       rowArray[r]->getHead()->setValue(val);
     else
       pLeft->getNextRight()->setValue(val);
+    return;
   }
 
   else {

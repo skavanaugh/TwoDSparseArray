@@ -1,14 +1,24 @@
 #ifndef __TWODARRAY_H__
 #define __TWODARRAY_H__
 
+#include "Node.h"
+#include "LinkedList.h"
+
 template <typename T>
 class TwoDArray {
 
   private:
-    int rows;
-    int columns;
+    int rows;  // total # of rows
+    int columns;  // total # of columns
     T defaultValue;
-    T** theArray;
+    LinkedList<T>** rowArray; //array of LinkedList<T> pointers
+    LinkedList<T>** colArray; //array of LinkedList<T> pointers
+    
+    Node<T>* findNode(int r, int c); // returns a ptr to the Node at (r,c)
+    // getNodes returns true if there is a Node (curr) at (r,c).
+    // pLeft is a ptr to the Node just left of curr (or where curr would be).
+    // pUp is a ptr to the node just up from curr (or where curr would be)
+    bool getNodes(int r, int c, Node<T>*& pLeft, Node<T>*& pUp);
 
   public:
     TwoDArray<T>(int r, int c, T def);
