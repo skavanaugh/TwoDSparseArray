@@ -1,5 +1,5 @@
 CPP = g++
-CPPFLAGS = -Wall -Wextra -g 
+CPPFLAGS = -Wall -Wextra 
 
 all: test nodetest
 

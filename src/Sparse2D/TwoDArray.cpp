@@ -108,20 +108,20 @@ TwoDArray<T>::~TwoDArray() {
       curr=rowArray[i]->getHead();
       while (curr!=0) {
         tmp=curr;
-        delete tmp;
         curr=curr->getNextRight();
+        delete tmp;
       }
     }
   }
-/*
+
   for (int j=0;j<rows;j++) {
-    delete [] rowArray[j];
+    delete rowArray[j];
   }
   
   for (int k=0;k<columns;k++) {
-    delete [] colArray[k];
+    delete colArray[k];
   }  
-*/  
+  
   delete [] rowArray;
   delete [] colArray;
 }
