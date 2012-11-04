@@ -210,7 +210,27 @@ TEST(TwoDArrayTest,remove) {
   delete sArr;
 }
 
-// no Google test currently implemented for the print method.  if i have time later, i will redirect output to a file and test.
+// the Google test below for the print method is just testing if the print method returns without errors.  if i have time later, i will redirect output to a file and test this method properly.
+
+TEST(TwoDArrayTest,print) {
+
+  TwoDArray<int>* iArr = new TwoDArray<int>(10,10,0);
+  iArr->insert(1,1,5);
+  iArr->insert(2,4,9);
+  iArr->print();
+  delete iArr;
+
+  TwoDArray<double>* dArr = new TwoDArray<double>(4,8,3.45);
+  dArr->insert(3,6,2.22);
+  dArr->print();
+  delete dArr;
+
+  TwoDArray<string>* sArr = new TwoDArray<string>(6,12,"moo");
+  sArr->insert(1,2,"oink");
+  sArr->print();
+  delete sArr;
+
+}
 
 TEST(TwoDArrayTest,getNumRows) {
 
